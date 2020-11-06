@@ -131,7 +131,7 @@ def main():
 			#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
 			# Load your .pkl file with the model of your choice + make predictions
 			# Try loading in multiple models to give the user a choice
-			predictor = joblib.load(open(os.path.join("C:/Users/mojel/Documents/EDSA/Predict/Classification/climate-change-edsa2020-21/LinearSVC_model.pkl"),"rb"))
+			predictor = joblib.load(open(os.path.join("resources/LinearSVC_model.pkl"),"rb"))
 			prediction = predictor.predict([tweet_text])
 
 			# When model has successfully run, will print prediction
