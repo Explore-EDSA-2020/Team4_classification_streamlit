@@ -199,6 +199,7 @@ Variable definitions:
 			markup(selection)
 			st.info("Prediction with ML Models")
 			if st.checkbox("LinearSVC"):
+				st.info('Linear SVC - it fits to the data you provide, returning a "best fit" hyperplane that divides, or categorizes, your data. From there, after getting the hyperplane, you can then feed some features to your classifier to see what the "predicted" class is.')
 				# Creating a text box for user input
 				tweet_text = st.text_area("Enter Text","Type Here")
 			
@@ -217,6 +218,7 @@ Variable definitions:
 					st.success("Text Categorized as: {}".format(prediction))
 
 			if st.checkbox("DecisionTreeClassifier"):
+				st.info("Decision Tree - A machine learning model that operates by partitioning data into smaller subsets. It considers all possible binary data splits and selects the data split with the best separation of the data")
 				# Creating a text box for user input
 				tweet_text = st.text_area("Enter Text for DecisionTree","Type Text for Decision Tree")
 			
@@ -236,6 +238,7 @@ Variable definitions:
 			
 
 			if st.checkbox("Random_Forest"):
+				st.info("Random Forest - An ensemble machine learning method that operates by constructing multiple decision trees at training time and outputting the mode classifications for the individual trees")
 				# Creating a text box for user input
 				tweet_text = st.text_area("Enter Text for random forest","Type Here for RF")
 			
@@ -255,6 +258,7 @@ Variable definitions:
 
 
 			if st.checkbox("KNeiobors Classifier"):
+				st.info("KNeighbors Classifiers - implements classification based on voting by nearest k-neighbors of target point, t, while RadiusNeighborsClassifier implements classification based on all neighborhood points within a fixed radius, r, of target point, t")
 				# Creating a text box for user input
 				tweet_text = st.text_area("Enter Text for knb","Type Here for knb")
 			
@@ -274,6 +278,7 @@ Variable definitions:
 	
 
 			if st.checkbox("Lightgbm"):
+				st.info("Light gbm -  is a gradient boosting framework that uses tree based learning algorithm. It grows tree vertically while other algorithm grows trees horizontally.")
 				# Creating a text box for user input
 				tweet_text = st.text_area("Enter Text for lightgbm","Type Here for lightgbm")
 			
@@ -292,6 +297,7 @@ Variable definitions:
 					st.success("Text Categorized as: {}".format(prediction))
 
 			if st.checkbox("Xgboost"):
+				st.info("XGBoost - An ensemble machine learning model technique that uses gradient boosting framework for machine learning.")
 				# Creating a text box for user input
 				tweet_text = st.text_area("Enter Text for xgboost","Type Here for xgboost")
 			
@@ -310,6 +316,7 @@ Variable definitions:
 					st.success("Text Categorized as: {}".format(prediction))
 
 			if st.checkbox("Logistic regression"):
+				st.info("Logistic Regression - A machine learning method that computes the probability of an event occuring and places it in the relevant class or category")
 				# Creating a text box for user input
 				tweet_text = st.text_area("Enter Text for logistic regression","Type Here for logistic regression")
 			
