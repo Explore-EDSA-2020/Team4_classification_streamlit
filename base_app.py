@@ -28,6 +28,8 @@ import joblib,os
 # Data dependencies
 from sklearn.pipeline import Pipeline
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from sklearn.metrics import classification_report
+from sklearn.model_selection import train_test_split
 
 
 import pandas as pd
@@ -37,16 +39,33 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from wordcloud import WordCloud
 import spacy_streamlit
+from PIL import Image
+import spacy
 import string
 import re
+import os
+
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+porterStemmer = nltk.PorterStemmer()
+wordNetLemma = nltk.WordNetLemmatizer()
+stopword = stopwords.words('english')
 
 # Vectorizer
 news_vectorizer = open("resources/tfidfvect.pkl","rb")
 tweet_cv = joblib.load(news_vectorizer) # loading your vectorizer from the pkl file
 
+st.set_option('deprecation.showPyplotGlobalUse', False)
+
+nlp = spacy.load('en')
+
 # Load your raw data
 raw = pd.read_csv("resources/train.csv")
 train_df = raw
+
+
 
 # The main function where we will build the actual app
 def main():
@@ -54,6 +73,7 @@ def main():
 
 	html_temp = """
 	<div style="background-color:{};padding:10px;border-radius:10px;margin:10px;">
+	<img src="resources/imgs/EDSA_LOGO.PNG" alt="edsa logo" width="500" height="600">
 	<h1 style="color:{};text-align:center;">EDSA 2020:Climate Change Belief Analysis</h1>
 	</div>
 	"""
@@ -100,7 +120,7 @@ def main():
 	# Creating sidebar with selection box -
 	# you can create multiple pages this way
 	
-	menu = ["Home", "Predictions", "Explanatory Design Analysis", "About The Predict"]
+	menu = ["Home", "About The Predict", "Text Classification", "Explanatory Design Analysis", "Predictions"]
 	selection = st.sidebar.selectbox("Menu", menu)
 
 	if selection == "Home":
@@ -108,36 +128,204 @@ def main():
 		st.markdown(title_temp, unsafe_allow_html=True)
 
 
-
-	# Building out the "Information" page
-	if selection == "Information":
-		st.info("General Information")
+	# Building out the "About" page
+	if selection == "About The Predict":
+		markup(selection)
+		st.info("Project Oveview : Predict an individual’s belief in climate change based on historical tweet data")
+		
 		# You can read a markdown file from supporting resources folder
-		st.markdown("Some information here")
+		if st.checkbox("Introduction"):
+			st.subheader("Introduction to Classification Predict")
+			st.info("""Many companies are built around lessening one’s environmental impact or carbon footprint.They offer products and services that are environmentally friendly and sustainable, in line with their values and ideals.
+			 They would like to determine how people perceive climate change and whether or not they believe it is a real threat.
+			 This would add to their market research efforts in gauging how their product/service may be received.We are creating  a Machine Learning Classifier models based on multiple Classifiers algorithhms including Logistic Regression,
+			 Decision Tree classifier, Xgboost classifier, Lightxboost classifiers, Linear SVC classifier and etc.The models should classify the text into
+			 whether the person believes in climate change  or not or based on their news tweet""")
 
-		st.subheader("Raw Twitter data and label")
-		if st.checkbox('Show raw data'): # data is hidden if box is unchecked
-			st.write(raw[['sentiment', 'message']]) # will write the df to the page
+		
+		if st.checkbox("Problem Statement"):
+			st.subheader("Problem Statement of the Classification Predict")
+			st.info("Build a Natural Language Processing models to classify whether or not a person believes in climate change or based on their novel tweet data")
+
+		if st.checkbox("Data"):
+			st.subheader("Data Decription")
+			st.info("""For this exercise we will be using the data that was funded by a Canada Foundation for Innovation JELF Grant to Chris Bauch,
+			 University of Waterloo. The dataset aggregates tweets pertaining to climate change collected between Apr 27, 2015 and Feb 21, 2018. In total, 43943 tweets were collected. Each tweet is labelled as one of the following classes:
+			 
+>2- News: the tweet links to factual news about the climate change
+
+>1 - Pro: the tweet support the believe of man made climate change
+
+>0 - Neutral: the tweet neither supports nor refutes the believe of manmade climate change
+
+>1 - Anti: the tweet does not believe in man made climate change
+
+Variable definitions:
+>sentiment: (Sentiment of tweet)
+>message: (Tweet body)
+>tweetid: (Twitter unique id)""")
+
+			st.subheader("Raw Twitter data and label")
+			if st.checkbox('Show raw data'): # data is hidden if box is unchecked
+				st.write(raw[['sentiment', 'message']]) # will write the df to the page
+
+
+# Building out the "Text Classification" page
+	if selection == "Text Classification":
+		# markup(selection)
+		
+		our_image = Image.open(os.path.join('resources/imgs/logo.png'))
+		st.image(our_image)
+
+		menu = ["Home","NER"]
+		choice = st.selectbox("Menu",menu)
+
+		if choice == "Home":
+			st.subheader("Tokenization")
+			raw_text = st.text_area("Your Text","Enter Text Here")
+			docx = nlp(raw_text)
+			if st.button("Tokenize"):
+				spacy_streamlit.visualize_tokens(docx,attrs=['text','pos_','dep_','ent_type_'])
+
+		elif choice == "NER":
+			st.subheader("Named Entity Recognition")
+			raw_text = st.text_area("Your Text","Enter Text Here")
+			docx = nlp(raw_text)
+			spacy_streamlit.visualize_ner(docx,labels=nlp.get_pipe('ner').labels)
 
 	# Building out the predication page
 	if selection == "Predictions":
-		markup(selection)
-		st.info("Prediction with ML Models")
-		# Creating a text box for user input
-		tweet_text = st.text_area("Enter Text","Type Here")
+		
+			markup(selection)
+			st.info("Prediction with ML Models")
+			if st.checkbox("LinearSVC"):
+				# Creating a text box for user input
+				tweet_text = st.text_area("Enter Text","Type Here")
+			
 
-		if st.button("Classify"):
-			# Transforming user input with vectorizer
-			#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
-			# Load your .pkl file with the model of your choice + make predictions
-			# Try loading in multiple models to give the user a choice
-			predictor = joblib.load(open(os.path.join("resources/LinearSVC_model.pkl"),"rb"))
-			prediction = predictor.predict([tweet_text])
+				if st.button("Classify"):
+					# Transforming user input with vectorizer
+					#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
+					# Load your .pkl file with the model of your choice + make predictions
+					# Try loading in multiple models to give the user a choice
+					predictor = joblib.load(open(os.path.join("resources/LinearSVC_model.pkl"),"rb"))
+					prediction = predictor.predict([tweet_text])
 
-			# When model has successfully run, will print prediction
-			# You can use a dictionary or similar structure to make this output
-			# more human interpretable.
-			st.success("Text Categorized as: {}".format(prediction))
+					# When model has successfully run, will print prediction
+					# You can use a dictionary or similar structure to make this output
+					# more human interpretable.
+					st.success("Text Categorized as: {}".format(prediction))
+
+			if st.checkbox("DecisionTreeClassifier"):
+				# Creating a text box for user input
+				tweet_text = st.text_area("Enter Text for DecisionTree","Type Text for Decision Tree")
+			
+
+				if st.button("Classify with DecisionTree"):
+					# Transforming user input with vectorizer
+					#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
+					# Load your .pkl file with the model of your choice + make predictions
+					# Try loading in multiple models to give the user a choice
+					predictor = joblib.load(open(os.path.join("resources/DecisionTreeClassifier.pkl"),"rb"))
+					prediction = predictor.predict([tweet_text])
+
+					# When model has successfully run, will print prediction
+					# You can use a dictionary or similar structure to make this output
+					# more human interpretable.
+					st.success("Text Categorized as: {}".format(prediction))
+			
+
+			if st.checkbox("Random_Forest"):
+				# Creating a text box for user input
+				tweet_text = st.text_area("Enter Text for random forest","Type Here for RF")
+			
+
+				if st.button("Classify for random forest"):
+					# Transforming user input with vectorizer
+					#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
+					# Load your .pkl file with the model of your choice + make predictions
+					# Try loading in multiple models to give the user a choice
+					predictor = joblib.load(open(os.path.join("resources/Random_Forest.pkl"),"rb"))
+					prediction = predictor.predict([tweet_text])
+
+					# When model has successfully run, will print prediction
+					# You can use a dictionary or similar structure to make this output
+					# more human interpretable.
+					st.success("Text Categorized as: {}".format(prediction))
+
+
+			if st.checkbox("KNeiobors Classifier"):
+				# Creating a text box for user input
+				tweet_text = st.text_area("Enter Text for knb","Type Here for knb")
+			
+
+				if st.button("Classify"):
+					# Transforming user input with vectorizer
+					#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
+					# Load your .pkl file with the model of your choice + make predictions
+					# Try loading in multiple models to give the user a choice
+					predictor = joblib.load(open(os.path.join("resources/KNeighborsClassifier.pkl"),"rb"))
+					prediction = predictor.predict([tweet_text])
+					
+					# When model has successfully run, will print prediction
+					# You can use a dictionary or similar structure to make this output
+					# more human interpretable.
+					st.success("Text Categorized as: {}".format(prediction))
+	
+
+			if st.checkbox("Lightgbm"):
+				# Creating a text box for user input
+				tweet_text = st.text_area("Enter Text for lightgbm","Type Here for lightgbm")
+			
+
+				if st.button("Classify with lightgbm"):
+					# Transforming user input with vectorizer
+					#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
+					# Load your .pkl file with the model of your choice + make predictions
+					# Try loading in multiple models to give the user a choice
+					predictor = joblib.load(open(os.path.join("resources/lightgbmClassifier.pkl"),"rb"))
+					prediction = predictor.predict([tweet_text])
+
+					# When model has successfully run, will print prediction
+					# You can use a dictionary or similar structure to make this output
+					# more human interpretable.
+					st.success("Text Categorized as: {}".format(prediction))
+
+			if st.checkbox("Xgboost"):
+				# Creating a text box for user input
+				tweet_text = st.text_area("Enter Text for xgboost","Type Here for xgboost")
+			
+
+				if st.button("Classify for xgboost"):
+					# Transforming user input with vectorizer
+					#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
+					# Load your .pkl file with the model of your choice + make predictions
+					# Try loading in multiple models to give the user a choice
+					predictor = joblib.load(open(os.path.join("resources/XgboostClassifier.pkl"),"rb"))
+					prediction = predictor.predict([tweet_text])
+
+					# When model has successfully run, will print prediction
+					# You can use a dictionary or similar structure to make this output
+					# more human interpretable.
+					st.success("Text Categorized as: {}".format(prediction))
+
+			if st.checkbox("Logistic regression"):
+				# Creating a text box for user input
+				tweet_text = st.text_area("Enter Text for logistic regression","Type Here for logistic regression")
+			
+
+				if st.button("Classify for logistic regression"):
+					# Transforming user input with vectorizer
+					#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
+					# Load your .pkl file with the model of your choice + make predictions
+					# Try loading in multiple models to give the user a choice
+					predictor = joblib.load(open(os.path.join("resources/Logistic_regression.pkl"),"rb"))
+					prediction = predictor.predict([tweet_text])
+
+					# When model has successfully run, will print prediction
+					# You can use a dictionary or similar structure to make this output
+					# more human interpretable.
+					st.success("Text Categorized as: {}".format(prediction))
 
 	# Building out the EDA page
 	if selection == "Explanatory Design Analysis":
@@ -147,35 +335,83 @@ def main():
 		#Show the counts
 
 		#plot and visualize the counts
-		if st.checkbox("barchat"):
-			st.subheader("Analys per count")
-			plt.title('Sentiment Analysis')
-			plt.xlabel('Sentiments')
-			plt.ylabel('Counts')
-			train_df['Analysis'].value_counts().plot(kind='bar')
-			plt.show()
-			st.pyplot()
+		if st.checkbox("Models and their Accuracy score"):
+			st.subheader("Models based on raw data and the accuracy score")
+			st.image('resources/accuracy.png', channels="BGR")
 
 
+		#plot and visualize the most used words in wordcloud
 		if st.checkbox("word cloud"):
-			st.subheader("word cloud")
-			allwords = ' '.join( [tweets for tweets in train_df['message']])
-			wordCloud = WordCloud(width = 500, height = 300, random_state = 21, max_font_size = 119).generate(allwords)
-			plt.imshow(wordCloud, interpolation = "bilinear")
-			plt.axis('off')
-			plt.show()
-			st.pyplot()
+			st.subheader("Most used words per each sentiment")
+			st.image('resources/wrdc.png', channels="BGR")
+
+			st.subheader("Most used words per each sentiment with clean data")
+			st.image('resources/wrdclean.png', channels="BGR")
 
 
-		if st.checkbox("messagen length"):
-			st.subheader("message length per each class")
-			bins = np.linspace(0, 150,50)
-			plt.hist(train_df['msg_len'], bins)
-			plt.legend(loc='upper right')
-			plt.title('Message length')
-			plt.show()
-			st.pyplot()
+		if st.checkbox("count of words per each sentiment"):
+			st.subheader("count of words per each sentiment with clean data")
+			st.image('resources/observations_sent.png', channels="BGR")
 
+			st.subheader("count of words per each sentiment with resampled data")
+			st.image('resources/classimb.png', channels="BGR")
+
+
+
+		if st.checkbox("Punctuation in messages "):
+			st.subheader("number of punctuations in messages per sentiment")
+			st.image('resources/punc.png', channels="BGR")
+
+
+		if st.checkbox("handles of the most tweets"):
+			st.subheader("handles of the tweets per message(news)")
+			st.image('resources/hand_news.png', channels="BGR")
+
+			st.subheader("handles of the tweets per message(Pro)")
+			st.image('resources/hand_pro.png', channels="BGR")
+
+
+			st.subheader("handles of the tweets per message(Anti)")
+			st.image('resources/handl_anti.png', channels="BGR")
+
+
+			st.subheader("handles of the tweets per message(Neutral)")
+			st.image('resources/hand_neutr.png', channels="BGR")
+			
+
+
+		if st.checkbox("frequent words used most in tweets"):
+			st.subheader("frequent words used most in tweets(news)")
+			st.image('resources/words_news.png', channels="BGR")
+
+
+			st.subheader("frequent words used most in tweets(Pro)")
+			st.image('resources/Pro_news.png', channels="BGR")
+
+
+			st.subheader("frequent words used most in tweets(Anti)")
+			st.image('resources/anti.png', channels="BGR")
+
+
+			st.subheader("frequent words used most in tweets(Neutral)")
+			st.image('resources/neutral.png', channels="BGR")
+
+
+		if st.checkbox("frequent # used most in tweets"):
+			st.subheader("frequent # used most in tweets(news)")
+			st.image('resources/#_news.png', channels="BGR")
+
+
+			st.subheader("frequent # used most in tweets(Pro)")
+			st.image('resources/Pro_#.png', channels="BGR")
+
+
+			st.subheader("frequent # used most in tweets(Anti)")
+			st.image('resources/anti_#.png', channels="BGR")
+
+
+			st.subheader("frequent # used most in tweets(Neutral)")
+			st.image('resources/neutral_#.png', channels="BGR")	
 
 		if st.checkbox("metrics"):
 			st.subheader('plot the PCC figure')
@@ -186,62 +422,54 @@ def main():
 			linewidths=0.5, cbar_kws={"shrink": 0.5}, ax=ax)
 			st.pyplot()
 
-		if st.checkbox("sentiment analysis"):
-			st.subheader('sentiment analysis')
-			sia = SentimentIntensityAnalyzer()
-			train_df['polarity scores'] = train_df["message"].apply(lambda x: sia.polarity_scores(x)["compound"])
-			train_df['sentiment'] = train_df['polarity scores'].apply(lambda y:'Anti' if y<0 else ('neutral' if y ==0 else 'positive' if y==1 else 'news') )
-				
-			total_tweets = len(train_df.index)
-			anti_sent=len(train_df[train_df['polarity scores']<0])
-			neutral_sent=len(train_df[train_df['polarity scores']==0])
-			pro_sent=len(train_df[train_df['polarity scores']==1])
-			news_sent=len(train_df[train_df['polarity scores']==2])
-			labels=['anti','neutral','pro','news']
-			colors=['red','blue','green','yellow']
-			explode = (0, 0, 0.1, 0.5) 
-			fig1, ax = plt.subplots()
-			wedges = ax.pie([anti_sent,neutral_sent,pro_sent,news_sent], explode=explode,colors=colors, labels=labels, autopct='%1.1f%%',shadow=True, startangle=90)
-			ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-			ax.set_title('Sentiment analysis for the tweets')
-			plt.legend(labels=['anti','neutral','pro','news'], loc="upper right")
-			plt.tight_layout()
-			plt.show()
-			#st.set_option('deprecation.showPyplotGlobalUse', False)
-			st.pyplot()
-			
-		# #eda(train_df)
-		# st.subheader("Data Analysis")
-		# st.write("climate_data")
-		# st.bar_chart(train_df['sentiment'])
 
 
-
-	# Building out the "About" page
-	if selection == "About The Predict":
-		markup(selection)
-		st.info("General Information")
-		# You can read a markdown file from supporting resources folder
-		st.markdown("Some information here")
-
-		st.subheader("Raw Twitter data and label")
-		if st.checkbox('Show raw data'): # data is hidden if box is unchecked
-			st.write(raw[['sentiment', 'message']]) # will write the df to the page
 
 def markup(heading):
 	html_temp = """<div style=background-color:{};padding:10px;boarder-radius:10px"><h1 style="color:{};text-align:center;">"""+heading+"""</h1>"""
 	st.markdown(html_temp.format('royalblue','white'), unsafe_allow_html=True)
 
 # Data Cleaning
-def cleanText(text):
-    text = text.lower()
-    text = re.sub(r'@[A-Za-z0-9]+', '', text) #Remove @mentions
-    text = re.sub(r':[\s]+', '', text)
-    text = re.sub(r'#', '', text) #Remove # symbol
-    text = re.sub(r'rt[\s]+', '', text) #Remove RT
-    text = re.sub(r'https?:\/\/\S+', '', text) #Remove hyper-links
-    return text
-train_df['message'] = train_df['message'].apply(cleanText)
+def clean_message(message):
+    str(message).lower()
+    regrex_pattern = re.compile(pattern = "["
+      u"\U0001F600-\U0001F64F"  # emoticons
+        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+        u"\U0001F680-\U0001F6FF"  # transport & map symbols
+        u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+        u"\U00002500-\U00002BEF"  # chinese char
+        u"\U00002702-\U000027B0"
+        u"\U00002702-\U000027B0"
+        u"\U000024C2-\U0001F251"
+        u"\U0001f926-\U0001f937"
+        u"\U00010000-\U0010ffff"
+        u"\u2640-\u2642" 
+        u"\u2600-\u2B55"
+        u"\u200d"
+        u"\u23cf"
+        u"\u23e9"
+        u"\u231a"
+        u"\ufe0f"  # dingbats
+        u"\u3030"
+         "]+", flags = re.UNICODE)
+    message = regrex_pattern.sub(r'',message) # remove emojis
+    # Remove user @ references and '#' from tweet
+    message = re.sub(r'@[A-Za-z0-9]+','',message) ##Remove @aderate
+    message = re.sub(r'RT[\s]+', '', message) ## remove RT Retweets
+    message = re.sub(r'https?:\/\/\S+', '', message) ##remove hyperlink
+    message =  ''.join([char for char in message if char not in string.punctuation]) ## remove puntuations i.e. ('!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')
+    message = re.sub(r'((www\.[^\s]+)|(https?://[^\s]+))', '', message) # remove URLs
+    message = re.sub(r'@[^\s]+', '', message) # remove usernames
+    message = re.sub(r'#[A-Za-z0-9]+', '', message) #get rid of hashtags
+    message = message.translate(str.maketrans('', '', string.punctuation))
+    message_tokens = word_tokenize(message)
+    filtered_message = [word.lower() for word in message_tokens if word not in stopword]
+
+    stemmed_words = [porterStemmer.stem(word) for word in filtered_message]
+    lemma_words = [wordNetLemma.lemmatize(word) for word in stemmed_words]
+
+    return ' '.join(lemma_words)
+train_df['message'] = train_df['message'].apply(clean_message)
 
 #Function to lable our Sentiments
 def getAnalysis(score):
