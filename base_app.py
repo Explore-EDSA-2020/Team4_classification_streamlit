@@ -120,7 +120,7 @@ def main():
 	# Creating sidebar with selection box -
 	# you can create multiple pages this way
 	
-	menu = ["Home", "About The Predict", "Text Classification", "Explanatory Design Analysis", "Predictions"]
+	menu = ["Home", "About The Predict", "Text Classification", "Explanatory Design Analysis", "Predictions","Model Performance"]
 	selection = st.sidebar.selectbox("Menu", menu)
 
 	if selection == "Home":
@@ -430,6 +430,28 @@ Variable definitions:
 			st.pyplot()
 
 
+	# Building out the "Model Perfomance" page
+	if selection == "Model Performance":
+		markup(selection)
+		st.subheader('Summary of all our models perfomance')
+		
+		
+		if st.checkbox("Base Models"):
+			st.subheader("F1Score, Accuracy and Train Time of our base models")
+			st.info("We trained our models on raw data and found that that LinearSVC, Logistic Regression, XGboost and Lightgm were our top 4 models in terms of accuracy.")
+			st.image('resources/f1score.png', channels="BGR")
+
+
+		if st.checkbox(" Models Based on clean Data"):
+			st.subheader("F1Score, Accuracy and Train Time of models trained with clean data")
+			st.info("We trained our models on clean data and found that that LinearSVC, Logistic Regression, Lightgm and XGboost  were our top 4 models in terms of accuracy.")
+			st.image('resources/f1clean.png', channels="BGR")	
+
+
+		if st.checkbox(" Ensemble Predictions"):
+			st.subheader("Ensemble Predictions")
+			st.info(""" Combine Model Predictions Into Ensemble Predictions. Using a Voting classifier simply means building multiple models (typically of differing types) and simple statistics (like calculating the mean) are used to combine predictions. It works by first creating two or more standalone models from your training dataset. A Voting Classifier can then be used to wrap your models and average the predictions of the sub-models when asked to make predictions for new data""")
+			st.image('resources/esembled.png', channels="BGR")
 
 
 def markup(heading):
