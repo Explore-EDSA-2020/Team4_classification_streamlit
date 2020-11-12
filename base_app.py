@@ -59,7 +59,7 @@ tweet_cv = joblib.load(news_vectorizer) # loading your vectorizer from the pkl f
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
-nlp = spacy.load('en')
+# nlp = spacy.load('en')
 
 # Load your raw data
 raw = pd.read_csv("resources/train.csv")
