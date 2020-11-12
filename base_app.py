@@ -38,7 +38,7 @@ import plotly.figure_factory as ff
 import matplotlib.pyplot as plt
 import seaborn as sns
 from wordcloud import WordCloud
-import spacy_streamlit
+#import spacy_streamlit
 from PIL import Image
 import spacy
 import string
