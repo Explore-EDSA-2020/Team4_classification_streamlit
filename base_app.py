@@ -160,6 +160,15 @@ Variable definitions:
 					# more human interpretable.
 					st.success("Text Categorized as: {}".format(prediction))
 
+					if prediction[0] == 2:
+						st.success('Tweet links factual news about climate change')
+					if prediction[0] == 1:
+						st.success('Tweet support the believe of man-made climate change')
+					if prediction[0] == 0:
+						st.success('Tweet neither supports nor refutes the believe of man-made climate change')
+					if prediction[0] == -1:
+						st.success('Tweet does not believe in man-made climate change')
+
 			if st.checkbox("DecisionTreeClassifier"):
 				st.info("Decision Tree - A machine learning model that operates by partitioning data into smaller subsets. It considers all possible binary data splits and selects the data split with the best separation of the data")
 				# Creating a text box for user input
@@ -178,7 +187,16 @@ Variable definitions:
 					# You can use a dictionary or similar structure to make this output
 					# more human interpretable.
 					st.success("Text Categorized as: {}".format(prediction))
-			
+
+					if prediction[0] == 2:
+						st.success('Tweet links factual news about climate change')
+					if prediction[0] == 1:
+						st.success('Tweet support the believe of man-made climate change')
+					if prediction[0] == 0:
+						st.success('Tweet neither supports nor refutes the believe of man-made climate change')
+					if prediction[0] == -1:
+						st.success('Tweet does not believe in man-made climate change')
+
 
 			if st.checkbox("Random_Forest"):
 				st.info("Random Forest - An ensemble machine learning method that operates by constructing multiple decision trees at training time and outputting the mode classifications for the individual trees")
@@ -199,6 +217,15 @@ Variable definitions:
 					# more human interpretable.
 					st.success("Text Categorized as: {}".format(prediction))
 
+					if prediction[0] == 2:
+						st.success('Tweet links factual news about climate change')
+					if prediction[0] == 1:
+						st.success('Tweet support the believe of man-made climate change')
+					if prediction[0] == 0:
+						st.success('Tweet neither supports nor refutes the believe of man-made climate change')
+					if prediction[0] == -1:
+						st.success('Tweet does not believe in man-made climate change')
+
 
 			if st.checkbox("KNeiobors Classifier"):
 				st.info("KNeighbors Classifiers - implements classification based on voting by nearest k-neighbors of target point, t, while RadiusNeighborsClassifier implements classification based on all neighborhood points within a fixed radius, r, of target point, t")
@@ -218,7 +245,16 @@ Variable definitions:
 					# You can use a dictionary or similar structure to make this output
 					# more human interpretable.
 					st.success("Text Categorized as: {}".format(prediction))
-	
+
+					if prediction[0] == 2:
+						st.success('Tweet links factual news about climate change')
+					if prediction[0] == 1:
+						st.success('Tweet support the believe of man-made climate change')
+					if prediction[0] == 0:
+						st.success('Tweet neither supports nor refutes the believe of man-made climate change')
+					if prediction[0] == -1:
+						st.success('Tweet does not believe in man-made climate change')
+
 
 			if st.checkbox("Lightgbm"):
 				st.info("Light gbm -  is a gradient boosting framework that uses tree based learning algorithm. It grows tree vertically while other algorithm grows trees horizontally.")
@@ -239,6 +275,15 @@ Variable definitions:
 					# more human interpretable.
 					st.success("Text Categorized as: {}".format(prediction))
 
+					if prediction[0] == 2:
+						st.success('Tweet links factual news about climate change')
+					if prediction[0] == 1:
+						st.success('Tweet support the believe of man-made climate change')
+					if prediction[0] == 0:
+						st.success('Tweet neither supports nor refutes the believe of man-made climate change')
+					if prediction[0] == -1:
+						st.success('Tweet does not believe in man-made climate change')
+
 			if st.checkbox("Xgboost"):
 				st.info("XGBoost - An ensemble machine learning model technique that uses gradient boosting framework for machine learning.")
 				# Creating a text box for user input
@@ -258,6 +303,15 @@ Variable definitions:
 					# more human interpretable.
 					st.success("Text Categorized as: {}".format(prediction))
 
+					if prediction[0] == 2:
+						st.success('Tweet links factual news about climate change')
+					if prediction[0] == 1:
+						st.success('Tweet support the believe of man-made climate change')
+					if prediction[0] == 0:
+						st.success('Tweet neither supports nor refutes the believe of man-made climate change')
+					if prediction[0] == -1:
+						st.success('Tweet does not believe in man-made climate change')
+
 			if st.checkbox("Logistic regression"):
 				st.info("Logistic Regression - A machine learning method that computes the probability of an event occuring and places it in the relevant class or category")
 				# Creating a text box for user input
@@ -276,6 +330,15 @@ Variable definitions:
 					# You can use a dictionary or similar structure to make this output
 					# more human interpretable.
 					st.success("Text Categorized as: {}".format(prediction))
+					
+					if prediction[0] == 2:
+						st.success('Tweet links factual news about climate change')
+					if prediction[0] == 1:
+						st.success('Tweet support the believe of man-made climate change')
+					if prediction[0] == 0:
+						st.success('Tweet neither supports nor refutes the believe of man-made climate change')
+					if prediction[0] == -1:
+						st.success('Tweet does not believe in man-made climate change')
 
 	# Building out the EDA page
 	if selection == "Explanatory Design Analysis":
