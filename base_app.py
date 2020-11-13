@@ -85,7 +85,7 @@ def main():
 	# Creating sidebar with selection box -
 	# you can create multiple pages this way
 	
-	menu = ["Home", "About The Predict", "Text Classification", "Explanatory Design Analysis", "Predictions","Model Performance"]
+	menu = ["Home", "About The Predict", "Explanatory Design Analysis", "Predictions","Model Performance"]
 	selection = st.sidebar.selectbox("Menu", menu)
 
 	if selection == "Home":
