@@ -138,207 +138,211 @@ Variable definitions:
 
 	# Building out the predication page
 	if selection == "Predictions":
-		
-			markup(selection)
-			st.info("Prediction with ML Models")
-			if st.checkbox("LinearSVC"):
-				st.info('Linear SVC - it fits to the data you provide, returning a "best fit" hyperplane that divides, or categorizes, your data. From there, after getting the hyperplane, you can then feed some features to your classifier to see what the "predicted" class is.')
-				# Creating a text box for user input
-				tweet_text = st.text_area("Enter Text","Type Here")
-			
+		markup(selection)
+		option = st.selectbox('Select a model',['LinearSVC','Decision Tree','Random Forest','KNeighbors Classifiers','Light gbm','XGBoost','Logistic Regression'])
+		if option == 'LinearSVC':
+			st.info('Linear SVC - it fits to the data you provide, returning a "best fit" hyperplane that divides, or categorizes, your data. From there, after getting the hyperplane, you can then feed some features to your classifier to see what the "predicted" class is.')
+					# Creating a text box for user input
+			tweet_text = st.text_area("Enter Text","Type Here")
+				
 
-				if st.button("Classify"):
-					# Transforming user input with vectorizer
-					#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
-					# Load your .pkl file with the model of your choice + make predictions
-					# Try loading in multiple models to give the user a choice
-					predictor = joblib.load(open(os.path.join("resources/LinearSVC_model.pkl"),"rb"))
-					prediction = predictor.predict([tweet_text])
+			if st.button("Classify"):
+						# Transforming user input with vectorizer
+						#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
+						# Load your .pkl file with the model of your choice + make predictions
+						# Try loading in multiple models to give the user a choice
+				predictor = joblib.load(open(os.path.join("resources/LinearSVC_model.pkl"),"rb"))
+				prediction = predictor.predict([tweet_text])
 
-					# When model has successfully run, will print prediction
-					# You can use a dictionary or similar structure to make this output
-					# more human interpretable.
-					st.success("Text Categorized as: {}".format(prediction))
+						# When model has successfully run, will print prediction
+						# You can use a dictionary or similar structure to make this output
+						# more human interpretable.
+				st.success("Text Categorized as: {}".format(prediction))
 
-					if prediction[0] == 2:
-						st.success('Tweet links factual news about climate change')
-					if prediction[0] == 1:
-						st.success('Tweet support the believe of man-made climate change')
-					if prediction[0] == 0:
-						st.success('Tweet neither supports nor refutes the believe of man-made climate change')
-					if prediction[0] == -1:
-						st.success('Tweet does not believe in man-made climate change')
+				if prediction[0] == 2:
+					st.success('Tweet links factual news about climate change')
+				if prediction[0] == 1:
+					st.success('Tweet support the believe of man-made climate change')
+				if prediction[0] == 0:
+					st.success('Tweet neither supports nor refutes the believe of man-made climate change')
+				if prediction[0] == -1:
+					st.success('Tweet does not believe in man-made climate change')
 
-			if st.checkbox("DecisionTreeClassifier"):
-				st.info("Decision Tree - A machine learning model that operates by partitioning data into smaller subsets. It considers all possible binary data splits and selects the data split with the best separation of the data")
-				# Creating a text box for user input
-				tweet_text = st.text_area("Enter Text for DecisionTree","Type Text for Decision Tree")
-			
+		if option == 'Decision Tree':
+			st.info("Decision Tree - A machine learning model that operates by partitioning data into smaller subsets. It considers all possible binary data splits and selects the data split with the best separation of the data")
+					# Creating a text box for user input
+			tweet_text = st.text_area("Enter Text","Type Here")
+				
 
-				if st.button("Classify with DecisionTree"):
-					# Transforming user input with vectorizer
-					#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
-					# Load your .pkl file with the model of your choice + make predictions
-					# Try loading in multiple models to give the user a choice
-					predictor = joblib.load(open(os.path.join("resources/DecisionTreeClassifier.pkl"),"rb"))
-					prediction = predictor.predict([tweet_text])
+			if st.button("Classify"):
+						# Transforming user input with vectorizer
+						#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
+						# Load your .pkl file with the model of your choice + make predictions
+						# Try loading in multiple models to give the user a choice
+				predictor = joblib.load(open(os.path.join("resources/DecisionTreeClassifier.pkl"),"rb"))
+				prediction = predictor.predict([tweet_text])
 
-					# When model has successfully run, will print prediction
-					# You can use a dictionary or similar structure to make this output
-					# more human interpretable.
-					st.success("Text Categorized as: {}".format(prediction))
+						# When model has successfully run, will print prediction
+						# You can use a dictionary or similar structure to make this output
+						# more human interpretable.
+				st.success("Text Categorized as: {}".format(prediction))
 
-					if prediction[0] == 2:
-						st.success('Tweet links factual news about climate change')
-					if prediction[0] == 1:
-						st.success('Tweet support the believe of man-made climate change')
-					if prediction[0] == 0:
-						st.success('Tweet neither supports nor refutes the believe of man-made climate change')
-					if prediction[0] == -1:
-						st.success('Tweet does not believe in man-made climate change')
+				if prediction[0] == 2:
+					st.success('Tweet links factual news about climate change')
+				if prediction[0] == 1:
+					st.success('Tweet support the believe of man-made climate change')
+				if prediction[0] == 0:
+					st.success('Tweet neither supports nor refutes the believe of man-made climate change')
+				if prediction[0] == -1:
+					st.success('Tweet does not believe in man-made climate change')
+
+		if option == 'Random Forest':
+			st.info("Random Forest - An ensemble machine learning method that operates by constructing multiple decision trees at training time and outputting the mode classifications for the individual trees")
+					# Creating a text box for user input
+			tweet_text = st.text_area("Enter Text","Type Here")
+				
+
+			if st.button("Classify"):
+						# Transforming user input with vectorizer
+						#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
+						# Load your .pkl file with the model of your choice + make predictions
+						# Try loading in multiple models to give the user a choice
+				predictor = joblib.load(open(os.path.join("resources/Random_Forest.pkl"),"rb"))
+				prediction = predictor.predict([tweet_text])
+
+						# When model has successfully run, will print prediction
+						# You can use a dictionary or similar structure to make this output
+						# more human interpretable.
+				st.success("Text Categorized as: {}".format(prediction))
+
+				if prediction[0] == 2:
+					st.success('Tweet links factual news about climate change')
+				if prediction[0] == 1:
+					st.success('Tweet support the believe of man-made climate change')
+				if prediction[0] == 0:
+					st.success('Tweet neither supports nor refutes the believe of man-made climate change')
+				if prediction[0] == -1:
+					st.success('Tweet does not believe in man-made climate change')
+
+		if option == 'KNeighbors Classifiers':
+			st.info("KNeighbors Classifiers - implements classification based on voting by nearest k-neighbors of target point, t, while RadiusNeighborsClassifier implements classification based on all neighborhood points within a fixed radius, r, of target point, t")
+					# Creating a text box for user input
+			tweet_text = st.text_area("Enter Text","Type Here")
+				
+
+			if st.button("Classify"):
+						# Transforming user input with vectorizer
+						#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
+						# Load your .pkl file with the model of your choice + make predictions
+						# Try loading in multiple models to give the user a choice
+				predictor = joblib.load(open(os.path.join("resources/KNeighborsClassifier.pkl"),"rb"))
+				prediction = predictor.predict([tweet_text])
+
+						# When model has successfully run, will print prediction
+						# You can use a dictionary or similar structure to make this output
+						# more human interpretable.
+				st.success("Text Categorized as: {}".format(prediction))
+
+				if prediction[0] == 2:
+					st.success('Tweet links factual news about climate change')
+				if prediction[0] == 1:
+					st.success('Tweet support the believe of man-made climate change')
+				if prediction[0] == 0:
+					st.success('Tweet neither supports nor refutes the believe of man-made climate change')
+				if prediction[0] == -1:
+					st.success('Tweet does not believe in man-made climate change')
+
+		if option == 'Light gbm':
+			st.info("Light gbm -  is a gradient boosting framework that uses tree based learning algorithm. It grows tree vertically while other algorithm grows trees horizontally.")
+					# Creating a text box for user input
+			tweet_text = st.text_area("Enter Text","Type Here")
+				
+
+			if st.button("Classify"):
+						# Transforming user input with vectorizer
+						#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
+						# Load your .pkl file with the model of your choice + make predictions
+						# Try loading in multiple models to give the user a choice
+				predictor = joblib.load(open(os.path.join("resources/lightgbmClassifier.pkl"),"rb"))
+				prediction = predictor.predict([tweet_text])
+
+						# When model has successfully run, will print prediction
+						# You can use a dictionary or similar structure to make this output
+						# more human interpretable.
+				st.success("Text Categorized as: {}".format(prediction))
+
+				if prediction[0] == 2:
+					st.success('Tweet links factual news about climate change')
+				if prediction[0] == 1:
+					st.success('Tweet support the believe of man-made climate change')
+				if prediction[0] == 0:
+					st.success('Tweet neither supports nor refutes the believe of man-made climate change')
+				if prediction[0] == -1:
+					st.success('Tweet does not believe in man-made climate change')
+
+		if option == 'XGBoost':
+			st.info("XGBoost - An ensemble machine learning model technique that uses gradient boosting framework for machine learning.")
+					# Creating a text box for user input
+			tweet_text = st.text_area("Enter Text","Type Here")
+				
+
+			if st.button("Classify"):
+						# Transforming user input with vectorizer
+						#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
+						# Load your .pkl file with the model of your choice + make predictions
+						# Try loading in multiple models to give the user a choice
+				predictor = joblib.load(open(os.path.join("resources/XgboostClassifier.pkl"),"rb"))
+				prediction = predictor.predict([tweet_text])
+
+						# When model has successfully run, will print prediction
+						# You can use a dictionary or similar structure to make this output
+						# more human interpretable.
+				st.success("Text Categorized as: {}".format(prediction))
+
+				if prediction[0] == 2:
+					st.success('Tweet links factual news about climate change')
+				if prediction[0] == 1:
+					st.success('Tweet support the believe of man-made climate change')
+				if prediction[0] == 0:
+					st.success('Tweet neither supports nor refutes the believe of man-made climate change')
+				if prediction[0] == -1:
+					st.success('Tweet does not believe in man-made climate change')
+
+		if option == 'Logistic Regression':
+			st.info("Logistic Regression - A machine learning method that computes the probability of an event occuring and places it in the relevant class or category")
+					# Creating a text box for user input
+			tweet_text = st.text_area("Enter Text","Type Here")
+				
+
+			if st.button("Classify"):
+						# Transforming user input with vectorizer
+						#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
+						# Load your .pkl file with the model of your choice + make predictions
+						# Try loading in multiple models to give the user a choice
+				predictor = joblib.load(open(os.path.join("resources/Logistic_regression.pkl"),"rb"))
+				prediction = predictor.predict([tweet_text])
+
+						# When model has successfully run, will print prediction
+						# You can use a dictionary or similar structure to make this output
+						# more human interpretable.
+				st.success("Text Categorized as: {}".format(prediction))
+
+				if prediction[0] == 2:
+					st.success('Tweet links factual news about climate change')
+				if prediction[0] == 1:
+					st.success('Tweet support the believe of man-made climate change')
+				if prediction[0] == 0:
+					st.success('Tweet neither supports nor refutes the believe of man-made climate change')
+				if prediction[0] == -1:
+					st.success('Tweet does not believe in man-made climate change')
+
+	
 
 
-			if st.checkbox("Random_Forest"):
-				st.info("Random Forest - An ensemble machine learning method that operates by constructing multiple decision trees at training time and outputting the mode classifications for the individual trees")
-				# Creating a text box for user input
-				tweet_text = st.text_area("Enter Text for random forest","Type Here for RF")
-			
-
-				if st.button("Classify for random forest"):
-					# Transforming user input with vectorizer
-					#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
-					# Load your .pkl file with the model of your choice + make predictions
-					# Try loading in multiple models to give the user a choice
-					predictor = joblib.load(open(os.path.join("resources/Random_Forest.pkl"),"rb"))
-					prediction = predictor.predict([tweet_text])
-
-					# When model has successfully run, will print prediction
-					# You can use a dictionary or similar structure to make this output
-					# more human interpretable.
-					st.success("Text Categorized as: {}".format(prediction))
-
-					if prediction[0] == 2:
-						st.success('Tweet links factual news about climate change')
-					if prediction[0] == 1:
-						st.success('Tweet support the believe of man-made climate change')
-					if prediction[0] == 0:
-						st.success('Tweet neither supports nor refutes the believe of man-made climate change')
-					if prediction[0] == -1:
-						st.success('Tweet does not believe in man-made climate change')
 
 
-			if st.checkbox("KNeiobors Classifier"):
-				st.info("KNeighbors Classifiers - implements classification based on voting by nearest k-neighbors of target point, t, while RadiusNeighborsClassifier implements classification based on all neighborhood points within a fixed radius, r, of target point, t")
-				# Creating a text box for user input
-				tweet_text = st.text_area("Enter Text for knb","Type Here for knb")
-			
-
-				if st.button("Classify"):
-					# Transforming user input with vectorizer
-					#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
-					# Load your .pkl file with the model of your choice + make predictions
-					# Try loading in multiple models to give the user a choice
-					predictor = joblib.load(open(os.path.join("resources/KNeighborsClassifier.pkl"),"rb"))
-					prediction = predictor.predict([tweet_text])
-					
-					# When model has successfully run, will print prediction
-					# You can use a dictionary or similar structure to make this output
-					# more human interpretable.
-					st.success("Text Categorized as: {}".format(prediction))
-
-					if prediction[0] == 2:
-						st.success('Tweet links factual news about climate change')
-					if prediction[0] == 1:
-						st.success('Tweet support the believe of man-made climate change')
-					if prediction[0] == 0:
-						st.success('Tweet neither supports nor refutes the believe of man-made climate change')
-					if prediction[0] == -1:
-						st.success('Tweet does not believe in man-made climate change')
 
 
-			if st.checkbox("Lightgbm"):
-				st.info("Light gbm -  is a gradient boosting framework that uses tree based learning algorithm. It grows tree vertically while other algorithm grows trees horizontally.")
-				# Creating a text box for user input
-				tweet_text = st.text_area("Enter Text for lightgbm","Type Here for lightgbm")
-			
-
-				if st.button("Classify with lightgbm"):
-					# Transforming user input with vectorizer
-					#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
-					# Load your .pkl file with the model of your choice + make predictions
-					# Try loading in multiple models to give the user a choice
-					predictor = joblib.load(open(os.path.join("resources/lightgbmClassifier.pkl"),"rb"))
-					prediction = predictor.predict([tweet_text])
-
-					# When model has successfully run, will print prediction
-					# You can use a dictionary or similar structure to make this output
-					# more human interpretable.
-					st.success("Text Categorized as: {}".format(prediction))
-
-					if prediction[0] == 2:
-						st.success('Tweet links factual news about climate change')
-					if prediction[0] == 1:
-						st.success('Tweet support the believe of man-made climate change')
-					if prediction[0] == 0:
-						st.success('Tweet neither supports nor refutes the believe of man-made climate change')
-					if prediction[0] == -1:
-						st.success('Tweet does not believe in man-made climate change')
-
-			if st.checkbox("Xgboost"):
-				st.info("XGBoost - An ensemble machine learning model technique that uses gradient boosting framework for machine learning.")
-				# Creating a text box for user input
-				tweet_text = st.text_area("Enter Text for xgboost","Type Here for xgboost")
-			
-
-				if st.button("Classify for xgboost"):
-					# Transforming user input with vectorizer
-					#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
-					# Load your .pkl file with the model of your choice + make predictions
-					# Try loading in multiple models to give the user a choice
-					predictor = joblib.load(open(os.path.join("resources/XgboostClassifier.pkl"),"rb"))
-					prediction = predictor.predict([tweet_text])
-
-					# When model has successfully run, will print prediction
-					# You can use a dictionary or similar structure to make this output
-					# more human interpretable.
-					st.success("Text Categorized as: {}".format(prediction))
-
-					if prediction[0] == 2:
-						st.success('Tweet links factual news about climate change')
-					if prediction[0] == 1:
-						st.success('Tweet support the believe of man-made climate change')
-					if prediction[0] == 0:
-						st.success('Tweet neither supports nor refutes the believe of man-made climate change')
-					if prediction[0] == -1:
-						st.success('Tweet does not believe in man-made climate change')
-
-			if st.checkbox("Logistic regression"):
-				st.info("Logistic Regression - A machine learning method that computes the probability of an event occuring and places it in the relevant class or category")
-				# Creating a text box for user input
-				tweet_text = st.text_area("Enter Text for logistic regression","Type Here for logistic regression")
-			
-
-				if st.button("Classify for logistic regression"):
-					# Transforming user input with vectorizer
-					#vect_text = tweet_cv.fit_transform([tweet_text]).toarray()
-					# Load your .pkl file with the model of your choice + make predictions
-					# Try loading in multiple models to give the user a choice
-					predictor = joblib.load(open(os.path.join("resources/Logistic_regression.pkl"),"rb"))
-					prediction = predictor.predict([tweet_text])
-
-					# When model has successfully run, will print prediction
-					# You can use a dictionary or similar structure to make this output
-					# more human interpretable.
-					st.success("Text Categorized as: {}".format(prediction))
-					
-					if prediction[0] == 2:
-						st.success('Tweet links factual news about climate change')
-					if prediction[0] == 1:
-						st.success('Tweet support the believe of man-made climate change')
-					if prediction[0] == 0:
-						st.success('Tweet neither supports nor refutes the believe of man-made climate change')
-					if prediction[0] == -1:
-						st.success('Tweet does not believe in man-made climate change')
 
 	# Building out the EDA page
 	if selection == "Explanatory Design Analysis":
