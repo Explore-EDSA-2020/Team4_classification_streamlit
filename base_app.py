@@ -31,17 +31,11 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 
-
+import streamlit.components.v1 as components
 import pandas as pd
-import numpy as np
 import plotly.figure_factory as ff
 import matplotlib.pyplot as plt
 import seaborn as sns
-from wordcloud import WordCloud
-from PIL import Image
-import spacy
-import string
-import re
 import os
 
 
@@ -91,7 +85,9 @@ def main():
 	if selection == "Home":
 		st.markdown(html_temp.format('royalblue','white'), unsafe_allow_html=True)
 		st.markdown(title_temp, unsafe_allow_html=True)
-
+		
+   
+                        
 
 	# Building out the "About" page
 	if selection == "About The Predict":
@@ -353,40 +349,40 @@ Variable definitions:
 		#plot and visualize the most used words in wordcloud
 		if st.checkbox("word cloud"):
 			st.subheader("Most used words per each sentiment")
-			st.image('resources/wrdc.png', channels="BGR")
+			st.image('resources/wrdc.png', channels="BGR",use_column_width=True)
 
 			st.subheader("Most used words per each sentiment with clean data")
-			st.image('resources/wrdclean.png', channels="BGR")
+			st.image('resources/wrdclean.png', channels="BGR",use_column_width=True)
 
 
 		if st.checkbox("count of words per each sentiment"):
 			st.subheader("count of words per each sentiment with clean data")
-			st.image('resources/observations_sent.png', channels="BGR")
+			st.image('resources/observations_sent.png', channels="BGR",use_column_width=True)
 
 			st.subheader("count of words per each sentiment with resampled data")
-			st.image('resources/classimb.png', channels="BGR")
+			st.image('resources/classimb.png', channels="BGR",use_column_width=True)
 
 
 
 		if st.checkbox("Punctuation in messages "):
 			st.subheader("number of punctuations in messages per sentiment")
-			st.image('resources/punc.png', channels="BGR")
+			st.image('resources/punc.png', channels="BGR",use_column_width=True)
 
 
 		if st.checkbox("handles of the most tweets"):
 			st.subheader("handles of the tweets per message(news)")
-			st.image('resources/hand_news.png', channels="BGR")
+			st.image('resources/hand_news.png', channels="BGR",use_column_width=True)
 			
 
 		if st.checkbox("frequent words used most in tweets"):
 			st.subheader("frequent words used most in tweets(news)")
-			st.image('resources/words_news.png', channels="BGR")
+			st.image('resources/words_news.png', channels="BGR",use_column_width=True)
 
 
 
 		if st.checkbox("frequent # used most in tweets"):
 			st.subheader("frequent # used most in tweets(news)")
-			st.image('resources/#_news.png', channels="BGR")
+			st.image('resources/#_news.png', channels="BGR",use_column_width=True)
 
 
 
